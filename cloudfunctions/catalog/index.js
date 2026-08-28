@@ -38,6 +38,7 @@ exports.main = async () => {
       groups[categoryId].goods.push({
         ...product,
         id: product._id,
+        desc: String(product.description || ''),
         image: /^(cloud:\/\/|https:\/\/)/.test(rawImage) ? rawImage : ''
       })
     }

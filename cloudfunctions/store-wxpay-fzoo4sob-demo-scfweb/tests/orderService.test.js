@@ -104,6 +104,33 @@ describe('OrderService', () => {
         assert.equal(state.products.product1.soldStock, 0);
     });
 
+    it('退款创建接口同步返回成功时立即完成退款', async () => {
+        const { db, state } = createDb();
+        Object.assign(state.orders.order1, {
+            status: 'paid', paymentStatus: 'paid', paymentLocked: true, stockState: 'sold',
+            payFee: 100, refundNo: 'REFUND001', refundFee: 100, refundStatus: 'requesting'
+        });
+        Object.assign(state.products.product1, { reservedStock: 0, soldStock: 2 });
+        const service = new OrderService({ db });
+        await service.handlerRefund({ out_trade_no: 'ORDER001', out_refund_no: 'REFUND001', amount: { refund: 100, total: 100 } }, {
+            status: 'SUCCESS', out_refund_no: 'REFUND001', refund_id: 'WR1', amount: { refund: 100, total: 100 }
+        });
+        assert.equal(state.orders.order1.refundStatus, 'refunded');
+    });
+
+    it('商户拒单在服务端创建幂等退款请求', async () => {
+        const { db, state } = createDb();
+        Object.assign(state.orders.order1, {
+            status: 'paid', paymentStatus: 'paid', paymentLocked: true, stockState: 'sold',
+            merchantStatus: 'waiting_accept', fulfillmentStatus: 'waiting_accept', transactionId: 'WX001', payFee: 100
+        });
+        const service = new OrderService({ db });
+        const result = await service.prepareMerchantRefund('order1', 'merchant-1', '商家拒单');
+        assert.equal(result.refundStatus, 'requesting');
+        assert.equal(result.params.out_trade_no, 'ORDER001');
+        assert.equal(state.orders.order1.refundStatus, 'requesting');
+    });
+
     it('退款关闭状态结束轮询并允许重新退款', async () => {
         const { db, state } = createDb();
         Object.assign(state.orders.order1, {

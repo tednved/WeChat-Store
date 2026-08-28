@@ -25,7 +25,8 @@ it('有访问时清理微信侧不存在的过期订单并释放库存', async (
         async query() { return { status: 404, data: { code: 'ORDER_NOT_EXIST' } }; }
         async close() { closeCalled = true; return { status: 404 }; }
     }
-    const cloud = { DYNAMIC_CURRENT_ENV: 'test', init() {}, database: () => db, getWXContext: () => ({ OPENID: 'openid-1' }) };
+    let openid = 'openid-1';
+    const cloud = { DYNAMIC_CURRENT_ENV: 'test', init() {}, database: () => db, getWXContext: () => ({ OPENID: openid }) };
     const original = Module.prototype.require;
     Module.prototype.require = function(id) {
         if (id === 'wx-server-sdk') return cloud;
@@ -46,6 +47,9 @@ it('有访问时清理微信侧不存在的过期订单并释放库存', async (
         assert.equal(state.product.reservedStock, 0);
         const throttled = await fn.main({ action: 'cleanup' });
         assert.equal(throttled.throttled, true);
+        openid = '';
+        const timer = await fn.main({});
+        assert.equal(timer.success, true);
     } finally {
         Module.prototype.require = original;
         for (const key of Object.keys(env)) delete process.env[key];

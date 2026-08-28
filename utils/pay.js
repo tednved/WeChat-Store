@@ -44,8 +44,8 @@ function requestOrderPayment(order) {
   }))
 }
 
-function requestRefund(data) {
-  return callWxPay('wxpay_refund', data).then(requireData)
+function rejectAndRefund(orderId, reason) {
+  return callWxPay('wxpay_reject_and_refund', { orderId, reason }).then(requireData)
 }
 
 function syncOrder(orderNo) {
@@ -61,13 +61,8 @@ function syncRefund(outRefundNo) {
 }
 
 function reconcileRefund(order) {
-  if (order.refundStatus === 'requesting') return requestRefund({
-    out_trade_no: order.orderNo,
-    out_refund_no: order.refundNo,
-    reason: order.refundReason || '商家拒单',
-    amount: { refund: Number(order.refundFee), total: Number(order.payFee || order.totalFee), currency: 'CNY' }
-  })
+  if (order.refundStatus === 'requesting') return rejectAndRefund(order._id, order.refundReason || '商家拒单')
   return syncRefund(order.refundNo)
 }
 
-module.exports = { requestOrderPayment, requestRefund, syncOrder, syncRefund, reconcileRefund, closeOrder }
+module.exports = { requestOrderPayment, rejectAndRefund, syncOrder, syncRefund, reconcileRefund, closeOrder }

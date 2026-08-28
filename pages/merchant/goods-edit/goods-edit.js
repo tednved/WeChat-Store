@@ -10,7 +10,14 @@ Page({
     wx.cloud.callFunction({ name: 'merchantGoods', data: { action: 'list' } }).then((res) => {
       const result = res.result || {}
       if (!result.success) throw new Error(result.message || '商品加载失败')
-      const categories = result.categories || []
+      const categoryMap = new Map()
+      ;(result.categories || []).forEach((item) => categoryMap.set(item.id, item))
+      ;(result.goods || []).forEach((item) => {
+        const name = String(item.categoryName || '未分类')
+        const id = String(item.categoryId || name)
+        if (!categoryMap.has(id)) categoryMap.set(id, { id, name })
+      })
+      const categories = Array.from(categoryMap.values()).sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'))
       const next = { categories, categoryNames: categories.map((item) => item.name) }
       if (id) {
         const goods = (result.goods || []).find((item) => item.id === id)

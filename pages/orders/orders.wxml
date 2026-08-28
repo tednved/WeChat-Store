@@ -18,19 +18,13 @@
         <view class="shop-title"><text class="shop-icon">店</text><text>{{item.storeName || '店铺'}}</text><text class="arrow">›</text></view>
         <view class="order-status-wrap"><text class="order-status {{item.refundStatus === 'refunded' ? 'refunded' : item.refundStatus === 'requesting' || item.refundStatus === 'processing' ? 'refunding' : item.status === 'paid' ? 'paid' : ''}}">{{item.statusText}}</text><text wx:if="{{item.status === 'pending' && item.remainSec > 0}}" class="countdown">{{item.remainText}}</text></view>
       </view>
-      <view class="order-content">
-        <view class="order-item" wx:for="{{item.items}}" wx:key="id" wx:for-item="goods">
-          <image class="goods-image" src="{{goods.image}}" mode="aspectFill" />
-          <view class="goods-main"><text class="goods-name">{{goods.name}}</text><text class="goods-count">x{{goods.count}}</text></view>
-          <text class="goods-price">¥{{goods.price}}</text>
-        </view>
-      </view>
+      <view class="summary"><image class="goods-image" src="{{item.items[0].image}}" mode="aspectFill" /><view class="goods-main"><text class="goods-name">{{item.items[0].name}}{{item.items.length > 1 ? ' 等商品' : ''}}</text><text class="summary-meta">共 {{item.items.length}} 种商品</text></view><view class="amount"><text>¥{{item.totalPriceStr}}</text><text class="paid">实付</text></view></view>
       <view class="summary-line"><text>共{{item.items.length}}种商品</text><text>合计：</text><text class="summary-price">¥{{item.totalPriceStr}}</text></view>
       <view class="order-footer">
         <view class="order-time-wrap"><text class="order-time">{{item.timeStr}}</text></view>
         <view class="footer-actions">
-          <button wx:if="{{item.merchantPhone && item.status !== 'pending' && item.status !== 'cancelled'}}" class="contact-btn" data-id="{{item._id}}" catchtap="callMerchant">联系商户</button>
-          <button wx:if="{{item.status === 'pending'}}" class="contact-btn" data-id="{{item._id}}" loading="{{cancellingId === item._id}}" disabled="{{cancellingId === item._id || payingId === item._id}}" catchtap="onCancelTap">取消订单</button>
+          <button wx:if="{{item.merchantPhone && item.status !== 'pending' && item.status !== 'cancelled'}}" class="contact-btn order-action" data-id="{{item._id}}" catchtap="callMerchant">联系商户</button>
+          <button wx:if="{{item.status === 'pending' && item.remainSec > 0}}" class="contact-btn order-action" data-id="{{item._id}}" loading="{{cancellingId === item._id}}" disabled="{{cancellingId === item._id || payingId === item._id}}" catchtap="onCancelTap">取消订单</button>
           <button wx:if="{{item.status === 'pending' && item.remainSec > 0}}" class="pay-btn" data-id="{{item._id}}" catchtap="onPayTap">去支付</button>
         </view>
       </view>

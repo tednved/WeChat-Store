@@ -49,7 +49,7 @@
     <image class="goods-img" src="{{good.image}}" mode="aspectFill"></image>
     <view class="goods-info">
       <view class="goods-name">{{good.name}}</view>
-      <view class="goods-desc">{{good.desc}}</view>
+      <view wx:if="{{good.description || good.desc}}" class="goods-desc">{{good.description || good.desc}}</view>
       <view class="goods-bottom">
         <view class="goods-price">
           <text class="price">￥{{good.price}}</text>

@@ -20,6 +20,7 @@ before(() => {
         async queryOrder() { return { trade_state: 'SUCCESS' }; }
         async closeOrder() { return { closed: true }; }
         async refund() { return { refund_id: 'R1' }; }
+        async rejectAndRefund() { return { refundStatus: 'processing' }; }
         async queryRefund() { return { refund_status: 'SUCCESS' }; }
         async handlePayCallback() { return true; }
         async handleRefundCallback() { return true; }
@@ -46,6 +47,14 @@ describe('支付控制器', () => {
         await controller.unifiedOrder(x.req, x.res);
         assert.equal(x.result().status, 200);
         assert.equal(x.result().data.data.signType, 'RSA');
+    });
+
+    it('商户拒单由支付服务一次性发起退款', async () => {
+        const x = reqRes({ orderId: 'order1', reason: '商家拒单' }, { 'x-wx-openid': 'merchant-1' });
+        controller.clientAuth(x.req, x.res, () => {});
+        await controller.rejectAndRefund(x.req, x.res);
+        assert.equal(x.result().status, 200);
+        assert.equal(x.result().data.data.refundStatus, 'processing');
     });
 
     it('只接受集成中心转发的支付回调', async () => {

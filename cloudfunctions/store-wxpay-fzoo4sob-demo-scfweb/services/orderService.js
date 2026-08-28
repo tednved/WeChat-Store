@@ -99,16 +99,18 @@ class OrderService {
     }
 
     async notifyMerchant(order) {
-        const templateId = process.env.ORDER_NOTIFY_TEMPLATE_ID || '';
+        const templateId = process.env.ORDER_NOTIFY_TEMPLATE_ID || '_qXUQmKilpOf8YLJOfx1gdX7aY3Bxf2V9uYxXqT2AXk';
         if (!templateId || !this.cloud || !order.storeId) return;
+        const items = order.items || [];
         const users = await this.getDb().collection('users').where({ notifyStoreIds: order.storeId, notifyEnabled: true }).limit(20).get();
         await Promise.all((users.data || []).filter((user) => ['merchant', 'admin'].includes(user.role) && user.isActive !== false && user.openid).map((user) => this.cloud.openapi.subscribeMessage.send({
             touser: user.openid, templateId, page: 'pages/merchant/order-detail/order-detail?orderId=' + order._id,
             miniprogramState: 'formal', lang: 'zh_CN', data: {
-                thing1: { value: (order.items || []).map((item) => item.name + '×' + item.count).join('、').slice(0, 20) || '新订单' },
-                amount2: { value: Number(order.totalPrice || 0).toFixed(2) + '元' },
-                characterString3: { value: String(order.orderNo).slice(-20) },
-                thing4: { value: String(order.addressDetail || '请进入商户端查看').slice(0, 20) }
+                character_string1: { value: String(order.orderNo).slice(-32) },
+                thing2: { value: items.map((item) => item.name).join('、').slice(0, 20) || '新订单' },
+                number3: { value: String(items.reduce((sum, item) => sum + Number(item.count || 0), 0)) },
+                amount8: { value: Number(order.totalPrice || 0).toFixed(2) + '元' },
+                thing5: { value: '请在订单详情查看' }
             }
         })));
     }
@@ -147,7 +149,39 @@ class OrderService {
         return order;
     }
 
+    async prepareMerchantRefund(orderId, operatorOpenid, reason) {
+        const db = this.getDb();
+        const userResult = await db.collection('users').where({ openid: operatorOpenid }).limit(1).get();
+        const user = userResult.data && userResult.data[0];
+        if (!user || !['merchant', 'admin'].includes(user.role) || user.isActive === false) throw new Error('没有退款权限');
+        let request;
+        await db.runTransaction(async (transaction) => {
+            const order = (await transaction.collection('orders').doc(orderId).get()).data;
+            if (!order || !['paid', 'completed'].includes(order.status) || (order.fulfillmentStatus || order.merchantStatus || 'waiting_accept') !== 'waiting_accept') throw new Error('当前订单不能拒单退款');
+            if (['processing', 'refunded'].includes(order.refundStatus)) {
+                request = { refundStatus: order.refundStatus };
+                return;
+            }
+            const fee = Number.isSafeInteger(Number(order.payFee)) ? Number(order.payFee) : this.expectedFee(order);
+            if (!Number.isSafeInteger(fee) || fee <= 0 || !order.transactionId) throw new Error('支付信息不完整，无法退款');
+            const refundNo = order.refundNo || ('R' + Date.now() + require('crypto').randomBytes(5).toString('hex').toUpperCase());
+            await transaction.collection('orders').doc(orderId).update({ data: {
+                refundNo, refundFee: fee, refundStatus: 'requesting', refundReason: String(reason || '商家拒单').slice(0, 80),
+                refundRequestTime: db.serverDate(), refundQueryCount: 0, nextRefundQueryAt: new Date(Date.now() + 60000), updateTime: db.serverDate()
+            } });
+            request = { refundStatus: 'requesting', params: { out_trade_no: order.orderNo, out_refund_no: refundNo, reason: String(reason || '商家拒单').slice(0, 80), amount: { refund: fee, total: fee, currency: 'CNY' } } };
+        });
+        return request;
+    }
+
     async handlerRefund(params, result) {
+        const status = String(result?.refund_status || result?.status || '');
+        if (['SUCCESS', 'CHANGE', 'REFUNDCLOSE', 'CLOSED', 'ABNORMAL'].includes(status)) return this.handlerRefundTrigger({
+            ...result,
+            refund_status: status,
+            out_refund_no: result?.out_refund_no || params.out_refund_no,
+            amount: result?.amount || params.amount
+        });
         const db = this.getDb();
         const order = await this.findOrder('orderNo', params.out_trade_no);
         await db.collection('orders').doc(order._id).update({ data: {
@@ -193,10 +227,11 @@ class OrderService {
     }
 
     async handlerRefundTrigger(params) {
-        const status = params.refund_status;
+        const status = params.refund_status || params.status;
         if (!['SUCCESS', 'CHANGE', 'REFUNDCLOSE', 'CLOSED', 'PROCESSING', 'ABNORMAL'].includes(status)) return true;
         const db = this.getDb();
-        const order = await this.findOrder('refundNo', params.out_refund_no);
+        const outRefundNo = params.out_refund_no || params.outRefundNo;
+        const order = await this.findOrder('refundNo', outRefundNo);
         if (!order) throw new Error('退款单不存在');
         const refundFee = Number(params.amount?.refund);
         const totalFee = Number(params.amount?.total);
