@@ -38,7 +38,7 @@
 
     <view class="bottom-actions">
       <button wx:if="{{order.merchantPhone && order.status !== 'cancelled'}}" class="plain-btn" bindtap="callMerchant">联系商户</button>
-      <button wx:if="{{order.status === 'pending'}}" class="plain-btn" loading="{{cancelling}}" disabled="{{cancelling || paying}}" bindtap="cancelOrder">取消订单</button>
+      <button wx:if="{{order.status === 'pending' && order.remainSec > 0}}" class="plain-btn" loading="{{cancelling}}" disabled="{{cancelling || paying}}" bindtap="cancelOrder">取消订单</button>
       <button wx:if="{{order.status === 'pending' && order.remainSec > 0}}" class="pay-btn" loading="{{paying}}" disabled="{{paying}}" bindtap="payOrder">去支付</button>
     </view>
   </block>

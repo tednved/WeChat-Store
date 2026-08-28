@@ -44,6 +44,13 @@ exports.refund = async (req, res) => {
     } catch (err) { fail(res, err); }
 };
 
+exports.rejectAndRefund = async (req, res) => {
+    try {
+        if (!req.body.orderId) throw new Error('orderId 必填');
+        success(res, await pay.rejectAndRefund(req.body.orderId, req.body.reason, req.openid));
+    } catch (err) { fail(res, err); }
+};
+
 exports.queryRefund = async (req, res) => {
     try {
         if (!req.body.out_refund_no) throw new Error('out_refund_no 必填');

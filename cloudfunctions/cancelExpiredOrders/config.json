@@ -1,3 +1,9 @@
 {
-  "triggers": []
+  "triggers": [
+    {
+      "name": "orderExpiryTimer",
+      "type": "timer",
+      "config": "0 */1 * * * * *"
+    }
+  ]
 }

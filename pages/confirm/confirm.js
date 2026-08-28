@@ -122,7 +122,7 @@ Page({
       if (outcome.paid) wx.setStorageSync('pendingPaymentOrderId', outcome.order.orderId)
       else wx.removeStorageSync('pendingPaymentOrderId')
       wx.removeStorageSync('confirmOrder')
-      wx.navigateTo({ url: '/pages/order-detail/order-detail?id=' + encodeURIComponent(outcome.order.orderId), success: () => {
+      wx.redirectTo({ url: '/pages/order-detail/order-detail?id=' + encodeURIComponent(outcome.order.orderId), success: () => {
         wx.showToast({ title: outcome.paid ? '支付结果确认中' : '订单已创建，可稍后支付', icon: 'none' })
       } })
     }).catch((err) => {

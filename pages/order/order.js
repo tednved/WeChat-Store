@@ -13,9 +13,7 @@ Page({
     store: null
   },
 
-  onLoad() {
-    this.fetchGoodsData();
-  },
+  onLoad() {},
 
   // 从确认页支付成功返回点单页时，清空购物车
   onShow() {
@@ -23,6 +21,7 @@ Page({
       wx.removeStorageSync('orderSubmitted');
       this.onClearCart();
     }
+    this.fetchGoodsData()
   },
 
   // 获取云端商品数据

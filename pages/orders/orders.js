@@ -28,7 +28,7 @@ Page({
 
   onShow() {
     this.active = true
-    this.fetchOrders(true, true)
+    this.fetchOrders(false, true)
     this.startCountdown()
     const pendingOrderId = wx.getStorageSync('pendingPaymentOrderId')
     if (pendingOrderId) this.confirmPaymentStatus(pendingOrderId)
@@ -54,7 +54,6 @@ Page({
       const page = (result.orders || []).map((order) => this.formatOrder(order)); const orders = reset ? page : this.data.orders.concat(page)
       this.setData({ orders: this.markExpired(orders), loading: false, loadingMore: false, hasMore: !!result.hasMore, nextCursor: result.nextCursor || 0 })
       this.scheduleStatusRefresh()
-      if (reconcile) return this.reconcilePendingOrders(page)
     }).catch((err) => {
       console.error('订单加载失败', err)
       this.setData({ loading: false, loadingMore: false })
@@ -63,7 +62,7 @@ Page({
 
   onPullRefresh() {
     this.setData({ refreshing: true })
-    Promise.resolve(this.fetchOrders(true, true)).finally(() => this.setData({ refreshing: false }))
+    Promise.resolve(this.fetchOrders(false, true)).finally(() => this.setData({ refreshing: false }))
   },
 
   onReachBottom() { return this.fetchOrders(false, false) },
@@ -72,15 +71,7 @@ Page({
   scheduleStatusRefresh() {
     this.stopStatusRefresh()
     const hasActiveOrder = this.data.orders.some((order) => order.status === 'pending' || order.refundStatus === 'requesting' || order.refundStatus === 'processing')
-    if (this.active && hasActiveOrder) this.statusTimer = setTimeout(() => this.fetchOrders(true, true, true), 5000)
-  },
-
-  reconcilePendingOrders(orders) {
-    const now = Date.now()
-    const pending = (orders || []).filter((order) => order.status === 'pending' && order.orderNo && (!order.nextPaymentQueryAt || new Date(order.nextPaymentQueryAt).getTime() <= now)).slice(0, 20)
-    if (!pending.length) return Promise.resolve()
-    return Promise.all(pending.map((order) => syncOrder(order.orderNo).catch((err) => console.error('订单查单补偿失败', order.orderNo, err))))
-      .then(() => this.fetchOrders(false, true, true))
+    if (this.active && hasActiveOrder) this.statusTimer = setTimeout(() => this.fetchOrders(false, true, true), 5000)
   },
 
   formatOrder(order) {
@@ -198,7 +189,6 @@ Page({
         const orders = this.data.orders.map((item) => item._id === orderId ? formatted : item)
         if (!orders.some((item) => item._id === orderId)) orders.unshift(formatted)
         this.setData({ orders })
-        wx.showToast({ title: '支付成功', icon: 'success' })
         return
       }
       if (attempt < 5) this.paymentTimer = setTimeout(() => this.confirmPaymentStatus(orderId, attempt + 1), 5000)

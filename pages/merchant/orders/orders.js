@@ -1,4 +1,4 @@
-const { requestRefund, reconcileRefund } = require('../../../utils/pay')
+const { rejectAndRefund, reconcileRefund } = require('../../../utils/pay')
 const STATUS_TEXT = { all: '全部', waiting_accept: '待接单', accepted: '已接单', preparing: '制作中', delivering: '配送中', completed: '已完成', refunding: '退款中', refunded: '已退款', cancelled: '已取消' }
 
 Page({
@@ -79,11 +79,7 @@ Page({
     wx.showModal({ title: '拒单并退款', content: '确认拒绝该订单并将全部实付款原路退还给用户吗？退款结果以微信处理为准。', confirmColor: '#d93026', success: (modal) => {
       if (!modal.confirm) return
       this.setData({ busyId: orderId })
-      wx.cloud.callFunction({ name: 'merchantOrders', data: { action: 'rejectAndRefund', orderId, reason: '商家拒单' } }).then((res) => {
-        const result = res.result || {}
-        if (!result.success) throw new Error(result.message || '拒单失败')
-        if (result.refundRequest) return requestRefund(result.refundRequest)
-      }).then(() => {
+      rejectAndRefund(orderId, '商家拒单').then(() => {
         wx.showToast({ title: '退款处理中', icon: 'none' })
         return this.fetchOrders()
       }).catch((err) => wx.showToast({ title: err.message || '拒单失败', icon: 'none' })).finally(() => this.setData({ busyId: '' }))

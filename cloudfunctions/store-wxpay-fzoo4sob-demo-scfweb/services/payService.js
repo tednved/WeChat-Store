@@ -61,6 +61,22 @@ class PayService {
         return result.data;
     }
 
+    async rejectAndRefund(orderId, reason, openid) {
+        const prepared = await this.orders.prepareMerchantRefund(String(orderId || ''), openid, reason);
+        if (!prepared.params) return { refundStatus: prepared.refundStatus };
+        const params = prepared.params;
+        params.notify_url = payConfig.refundNotifyUrl;
+        try {
+            const result = await this.sdk.refund(params);
+            if (result.status !== 200 || !result.data) throw new Error(result.data?.message || '退款申请失败');
+            await this.orders.handlerRefund(params, result.data);
+            return { refundStatus: result.data.status === 'SUCCESS' ? 'refunded' : 'processing' };
+        } catch (err) {
+            await this.orders.handlerRefundUnknown(params, err);
+            throw err;
+        }
+    }
+
     async queryRefund(params, openid) {
         await this.orders.validateRefundQuery(params.out_refund_no, openid);
         const result = await this.sdk.queryRefund(params.out_refund_no);

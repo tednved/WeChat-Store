@@ -1,5 +1,4 @@
 const cloud = require('wx-server-sdk')
-const crypto = require('crypto')
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const STATUS_TEXT = { waiting_accept: '待接单', accepted: '已接单', preparing: '制作中', delivering: '配送中', completed: '已完成', refunding: '退款中', refunded: '已退款', rejected: '已退款', cancelled: '已取消' }
@@ -52,32 +51,6 @@ exports.main = async (event = {}) => {
         await transaction.collection('orders').doc(orderId).update({ data })
       })
       return { success: true, merchantStatus: nextStatus }
-    }
-    if (action === 'rejectAndRefund') {
-      const orderId = event.orderId
-      if (!orderId) return { success: false, message: '缺少订单参数' }
-      const order = (await db.collection('orders').doc(orderId).get()).data
-      if (!order) return { success: false, message: '订单不存在' }
-      if (!isPaid(order) || getMerchantStatus(order) !== 'waiting_accept') return { success: false, message: '当前订单不能拒单退款' }
-      if (order.refundStatus === 'processing' || order.refundStatus === 'refunded') return { success: true, refundStatus: order.refundStatus }
-      const totalFee = Number.isSafeInteger(Number(order.payFee)) ? Number(order.payFee) : Number(order.totalFee)
-      if (!Number.isSafeInteger(totalFee) || totalFee <= 0 || !order.transactionId) return { success: false, message: '支付信息不完整，无法退款' }
-      const refundNo = order.refundNo || ('R' + Date.now() + crypto.randomBytes(5).toString('hex').toUpperCase())
-      const claimed = await db.runTransaction(async (transaction) => {
-        const latest = (await transaction.collection('orders').doc(orderId).get()).data
-        if (!latest || !isPaid(latest) || getMerchantStatus(latest) !== 'waiting_accept' || latest.refundStatus === 'requesting' || latest.refundStatus === 'processing' || latest.refundStatus === 'refunded') return false
-        await transaction.collection('orders').doc(orderId).update({ data: {
-          refundNo, refundFee: totalFee, refundStatus: 'requesting', refundReason: String(event.reason || '商家拒单').slice(0, 80),
-          refundRequestTime: db.serverDate(), refundQueryCount: 0, nextRefundQueryAt: new Date(Date.now() + 60000), updateTime: db.serverDate()
-        } })
-        return true
-      })
-      if (!claimed) {
-        const latest = (await db.collection('orders').doc(orderId).get()).data
-        if (latest.refundStatus !== 'requesting') return { success: true, refundStatus: latest.refundStatus || 'requesting' }
-        return { success: true, refundStatus: 'requesting', refundRequest: { out_trade_no: latest.orderNo, out_refund_no: latest.refundNo, reason: latest.refundReason, amount: { refund: Number(latest.refundFee), total: Number(latest.payFee || latest.totalFee), currency: 'CNY' } } }
-      }
-      return { success: true, refundStatus: 'requesting', refundRequest: { out_trade_no: order.orderNo, out_refund_no: refundNo, reason: String(event.reason || '商家拒单').slice(0, 80), amount: { refund: totalFee, total: totalFee, currency: 'CNY' } } }
     }
     return { success: false, message: '不支持的操作' }
   } catch (err) { console.error('merchantOrders 执行失败', err); return { success: false, message: err.message || '订单操作失败' } }

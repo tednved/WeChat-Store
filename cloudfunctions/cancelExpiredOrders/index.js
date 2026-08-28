@@ -4,8 +4,6 @@ const trade = require('./trade')
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
-const EXPIRE_MINUTES = 15
-
 function payClient() {
   const config = {
     appid: process.env.appId || '', mchid: process.env.merchantId || '',
@@ -22,8 +20,9 @@ function expectedFee(order) {
 }
 
 async function notifyMerchant(order) {
-  const templateId = process.env.ORDER_NOTIFY_TEMPLATE_ID || ''
+  const templateId = process.env.ORDER_NOTIFY_TEMPLATE_ID || '_qXUQmKilpOf8YLJOfx1gdX7aY3Bxf2V9uYxXqT2AXk'
   if (!templateId || !order.storeId) return
+  const items = order.items || []
   const result = await db.collection('users').where({ notifyStoreIds: order.storeId, notifyEnabled: true }).limit(20).get()
   await Promise.all((result.data || []).filter((user) => ['merchant', 'admin'].includes(user.role) && user.isActive !== false && user.openid).map((user) => cloud.openapi.subscribeMessage.send({
     touser: user.openid,
@@ -32,10 +31,11 @@ async function notifyMerchant(order) {
     miniprogramState: 'formal',
     lang: 'zh_CN',
     data: {
-      thing1: { value: (order.items || []).map((item) => item.name + '×' + item.count).join('、').slice(0, 20) || '新订单' },
-      amount2: { value: Number(order.totalPrice || 0).toFixed(2) + '元' },
-      characterString3: { value: String(order.orderNo).slice(-20) },
-      thing4: { value: String(order.addressDetail || '请进入商户端查看').slice(0, 20) }
+      character_string1: { value: String(order.orderNo).slice(-32) },
+      thing2: { value: items.map((item) => item.name).join('、').slice(0, 20) || '新订单' },
+      number3: { value: String(items.reduce((sum, item) => sum + Number(item.count || 0), 0)) },
+      amount8: { value: Number(order.totalPrice || 0).toFixed(2) + '元' },
+      thing5: { value: '请在订单详情查看' }
     }
   })))
 }
@@ -111,20 +111,11 @@ async function claimCleanup(openid) {
 exports.main = async (event = {}) => {
   try {
     const { OPENID } = cloud.getWXContext()
-    if (!OPENID) return { success: false, message: '获取用户身份失败' }
+    if (event.orderId) return { success: false, message: '请通过支付服务取消未支付订单' }
+    if (event.action && event.action !== 'cleanup') return { success: false, message: '不支持的操作' }
     const client = payClient()
-
-    if (event.orderId) {
-      const order = (await db.collection('orders').doc(String(event.orderId)).get()).data
-      if (!order || order._openid !== OPENID) return { success: false, message: '订单不存在或无权取消' }
-      if (order.status !== 'pending') return { success: false, message: '当前订单不可取消' }
-      const state = await cancelOrder(client, { ...order, _id: event.orderId })
-      return { success: state !== 'unknown', state, message: state === 'unknown' ? '支付状态暂时无法确认' : '' }
-    }
-
-    if (event.action !== 'cleanup') return { success: false, message: '不支持的操作' }
     const now = Date.now()
-    if (!await claimCleanup(OPENID)) return { success: true, throttled: true, cancelled: 0, paid: 0 }
+    if (OPENID && !await claimCleanup(OPENID)) return { success: true, throttled: true, cancelled: 0, paid: 0 }
     const result = await db.collection('orders')
       .where({ status: 'pending', expireAt: db.command.lte(new Date(now)) })
       .orderBy('expireAt', 'asc')

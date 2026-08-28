@@ -13,9 +13,7 @@ Page({
   onShow() {
     if (!this.orderId) return
     this.active = true
-    this.loadOrder().then((order) => {
-      if (order?.status === 'pending' && order.orderNo) return syncOrder(order.orderNo).catch((err) => console.error('订单查单补偿失败', err)).then(() => this.loadOrder(true))
-    })
+    this.loadOrder()
   },
   onHide() { this.active = false; this.stopStatusRefresh(); this.stopCountdown() },
   onUnload() { this.active = false; this.stopStatusRefresh(); this.stopCountdown(); if (this.paymentTimer) clearTimeout(this.paymentTimer) },
