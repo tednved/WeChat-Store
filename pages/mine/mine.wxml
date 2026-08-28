@@ -1,0 +1,45 @@
+<view class="mine-page">
+  <view class="user-info">
+    <block wx:if="{{loading}}">
+      <view class="status-tip">正在登录...</view>
+    </block>
+
+    <block wx:elif="{{isLoggedIn}}">
+      <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+        <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill"></image>
+        <view wx:else class="avatar avatar-placeholder">人</view>
+      </button>
+      <input type="nickname" class="nickname-input" placeholder="点击输入昵称" model:value="{{nickname}}" bindblur="onSaveUserInfo"/>
+    </block>
+
+    <block wx:else>
+      <view class="status-tip">未登录</view>
+      <button class="retry-btn" bindtap="doLogin">点击登录</button>
+    </block>
+  </view>
+
+  <view class="menu-list">
+    <view class="menu-item" bindtap="goToOrders">
+      <text>我的订单</text>
+      <text class="arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goToAddress">
+      <text>我的地址</text>
+      <text class="arrow">></text>
+    </view>
+    <view wx:if="{{role === 'admin'}}" class="menu-item admin-entry" bindtap="goToAdmin">
+      <text>管理员设置</text>
+      <text class="merchant-hint">用户 / 权限</text>
+      <text class="arrow">></text>
+    </view>
+    <view wx:if="{{role === 'merchant' || role === 'admin'}}" class="menu-item merchant-entry" bindtap="goToMerchant">
+      <text>商户管理</text>
+      <text class="merchant-hint">商品 / 订单</text>
+      <text class="arrow">></text>
+    </view>
+    <view class="menu-item">
+      <button open-type="contact" class="contact-btn">联系客服</button>
+      <text class="arrow">></text>
+    </view>
+  </view>
+</view>

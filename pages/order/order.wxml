@@ -1,0 +1,142 @@
+<view class="order-page">
+  <!-- 顶部店铺信息 -->
+  <view class="shop-header">
+    <text class="shop-name">{{store.name || '店铺加载中'}}</text>
+    <text class="shop-sub">{{store.subtitle}}</text>
+  </view>
+
+  <!-- 内容区域：左右两列 -->
+  <view class="content">
+    <!-- 左侧分类栏 -->
+    <scroll-view
+      class="category-scroll"
+      scroll-y="true"
+    >
+      <block wx:for="{{categories}}" wx:key="id">
+        <view
+          class="category-item {{index === activeCategoryIndex ? 'active' : ''}}"
+          data-index="{{index}}"
+          bindtap="onCategoryTap"
+        >
+          <!-- 选中项显示短红条 -->
+          <view
+            wx:if="{{index === activeCategoryIndex}}"
+            class="category-indicator"
+          ></view>
+          <text>{{item.name}}</text>
+        </view>
+      </block>
+    </scroll-view>
+
+    <!-- 右侧商品列表 -->
+    <scroll-view
+      class="goods-scroll {{cartCount > 0 ? '' : 'no-cart-bar'}}"
+      scroll-y="true"
+      scroll-into-view="{{toView}}"
+      scroll-with-animation="true"
+      bindscroll="onGoodsScroll"
+    >
+      <block wx:for="{{categories}}" wx:key="id">
+        <!-- 每个分类块一个锚点 id，用于 scroll-into-view -->
+        <view class="goods-category-block" id="cat-{{item.id}}">
+          <view class="goods-category-title">
+            <text>{{item.name}}</text>
+          </view>
+
+          <!-- 当前分类下的商品列表 -->
+          <block wx:for="{{item.goods}}" wx:key="id" wx:for-item="good">
+  <view class="goods-item">
+    <image class="goods-img" src="{{good.image}}" mode="aspectFill"></image>
+    <view class="goods-info">
+      <view class="goods-name">{{good.name}}</view>
+      <view class="goods-desc">{{good.desc}}</view>
+      <view class="goods-bottom">
+        <view class="goods-price">
+          <text class="price">￥{{good.price}}</text>
+        </view>
+        
+        <view class="stepper">
+          <block wx:if="{{cartMap[good.id] > 0}}">
+            <view class="minus-btn" data-gid="{{good.id}}" bindtap="onMinusTap">-</view>
+            <view class="count-num">{{cartMap[good.id]}}</view>
+          </block>
+          <view class="add-btn" data-gid="{{good.id}}" bindtap="onAddTap">+</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</block>
+    </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 底部购物车条 -->
+  <view class="cart-bar" wx:if="{{cartCount > 0}}">
+    <view class="cart-left" bindtap="onCartIconTap">
+      <view class="cart-icon-wrapper">
+        <view class="cart-icon">
+          <text class="cart-icon-text">🛒</text>
+        </view>
+        <view class="cart-count" wx:if="{{cartCount > 0}}">
+          <text>{{cartCount}}</text>
+        </view>
+      </view>
+
+      <view class="cart-total">
+        <text class="cart-total-label">合计：</text>
+        <text class="cart-total-price">￥{{totalPriceStr}}</text>
+      </view>
+    </view>
+
+    <button class="cart-submit-btn" bindtap="onSubmitTap">
+      去结算
+    </button>
+  </view>
+
+  <!-- 购物车半屏弹窗 -->
+  <view
+    class="cart-popup-mask"
+    wx:if="{{showCartPopup}}"
+    bindtap="onCartMaskTap"
+  >
+    <!-- catchtap 阻止点击弹窗本体时冒泡到遮罩导致关闭 -->
+    <view class="cart-popup" catchtap="onCartPopupTap">
+      <view class="cart-popup-header">
+        <text class="cart-popup-title">购物车</text>
+        <text class="cart-popup-clear" bindtap="onClearCart">清空</text>
+      </view>
+
+      <scroll-view class="cart-popup-list" scroll-y="true">
+        <block wx:if="{{cartItems.length === 0}}">
+          <view class="cart-empty">购物车是空的~</view>
+        </block>
+
+        <block wx:for="{{cartItems}}" wx:key="id">
+          <view class="cart-item">
+            <text class="cart-item-name">{{item.name}}</text>
+            <view class="cart-item-right">
+              <text class="cart-item-price">￥{{item.price}}</text>
+
+              <view class="stepper">
+  <view 
+    class="minus-btn" 
+    data-gid="{{item.id}}" 
+    bindtap="onMinusTap"
+  >-</view>
+  
+  <text class="count-num">{{item.count}}</text>
+  
+  <view 
+    class="add-btn" 
+    data-gid="{{item.id}}" 
+    bindtap="onAddTap"
+  >+</view>
+</view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+</view>

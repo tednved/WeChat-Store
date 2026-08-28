@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText":  "订单管理",
+    "enablePullDownRefresh":  true,
+    "navigationStyle":  "custom",
+    "usingComponents":  {
+                            "navigation-bar":  "/components/navigation-bar/navigation-bar"
+                        }
+}

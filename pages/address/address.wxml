@@ -1,0 +1,30 @@
+<navigation-bar title="{{selecting ? '选择收货地址' : '我的地址'}}" back="{{true}}" />
+
+<view class="address-page">
+  <view wx:if="{{loading}}" class="empty">正在加载地址...</view>
+  <view wx:elif="{{addresses.length === 0}}" class="empty">还没有收货地址，先添加一个吧</view>
+  <view wx:else>
+    <view wx:for="{{addresses}}" wx:key="_id" class="address-card" data-id="{{item._id}}" bindtap="chooseForOrder">
+      <view class="card-top">
+        <view class="person">
+          <text class="name">{{item.name}}</text>
+          <text wx:if="{{item.gender}}" class="gender">{{item.gender}}</text>
+          <text class="phone">{{item.phone}}</text>
+        </view>
+        <view class="radio {{item.isDefault ? 'checked' : ''}}" data-id="{{item._id}}" catchtap="makeDefault">
+          <view wx:if="{{item.isDefault}}" class="radio-inner"></view>
+        </view>
+      </view>
+      <text class="detail">{{item.detail}}</text>
+      <view class="card-bottom">
+        <text wx:if="{{item.isDefault}}" class="default-label">默认地址</text>
+        <view class="card-actions">
+          <text class="edit" data-id="{{item._id}}" catchtap="editAddress">编辑</text>
+          <text class="delete" data-id="{{item._id}}" catchtap="deleteAddress">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <button class="add-btn" bindtap="addAddress">＋ 新增收货地址</button>
+</view>

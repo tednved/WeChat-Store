@@ -1,0 +1,22 @@
+<navigation-bar title="{{addressId ? '编辑地址' : '新增地址'}}" back="{{true}}" />
+
+<view class="edit-page">
+  <view class="form-card">
+    <view class="field name-field">
+      <text class="label">收货人</text>
+      <input class="name-input" data-field="name" value="{{name}}" bindinput="onInput" placeholder="姓名" maxlength="10" />
+      <view class="gender-options">
+        <view wx:for="{{genderOptions}}" wx:key="*this" class="gender-option {{gender === item ? 'selected' : ''}}" data-index="{{index}}" bindtap="onGenderChange">{{item}}</view>
+      </view>
+    </view>
+    <view class="field">
+      <text class="label">联系电话</text>
+      <input class="input" data-field="phone" value="{{phone}}" bindinput="onInput" placeholder="请输入联系电话" maxlength="20" />
+    </view>
+    <view class="field">
+      <text class="label">收货地址</text>
+      <textarea class="textarea" data-field="detail" value="{{detail}}" bindinput="onInput" placeholder="例如：6-107、宿舍楼下" maxlength="120" />
+    </view>
+  </view>
+  <button class="save-btn" loading="{{saving}}" disabled="{{saving}}" bindtap="save">保存地址</button>
+</view>
