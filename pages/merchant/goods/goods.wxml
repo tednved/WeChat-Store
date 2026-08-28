@@ -1,0 +1,40 @@
+<view class="goods-shell">
+<navigation-bar title="商品管理" back="{{true}}" />
+<view class="goods-toolbar">
+  <view class="tabs">
+    <view class="tab {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="selectTab">全部</view>
+    <view class="tab {{currentTab === 'on_sale' ? 'active' : ''}}" data-tab="on_sale" bindtap="selectTab">已上架</view>
+    <view class="tab {{currentTab === 'off_sale' ? 'active' : ''}}" data-tab="off_sale" bindtap="selectTab">已下架</view>
+  </view>
+  <button class="add-btn" bindtap="addGoods">+ 新增</button>
+</view>
+<scroll-view class="goods-scroll" scroll-y="true" enhanced="true" show-scrollbar="false" refresher-enabled="true" refresher-triggered="{{refreshing}}" bindrefresherrefresh="onScrollRefresh">
+<view class="page">
+
+  <view wx:if="{{loading}}" class="empty">正在加载商品...</view>
+  <view wx:elif="{{goods.length === 0}}" class="empty">还没有商品，点击右上角新增</view>
+  <block wx:else>
+    <view wx:for="{{goods}}" wx:key="id" wx:if="{{currentTab === 'all' || (currentTab === 'on_sale' && item.status !== 'off_sale') || (currentTab === 'off_sale' && item.status === 'off_sale')}}" class="goods-card">
+      <image wx:if="{{item.image}}" class="goods-image" src="{{item.image}}" mode="aspectFill" />
+      <view wx:else class="goods-image image-placeholder">品</view>
+      <view class="goods-main">
+        <view class="goods-title-row">
+          <text class="goods-name">{{item.name}}</text>
+          <text class="status {{item.status === 'off_sale' ? 'off' : 'on'}}">{{item.status === 'off_sale' ? '已下架' : '已上架'}}</text>
+        </view>
+        <text class="category">{{item.categoryName || '未分类'}}</text>
+        <view class="goods-bottom">
+          <text class="price">¥{{item.price}}</text>
+          <text class="stock">库存 {{item.stock}}</text>
+        </view>
+      </view>
+      <view class="actions">
+        <button class="small-btn" data-id="{{item.id}}" bindtap="editGoods">编辑</button>
+        <button class="small-btn primary" data-id="{{item.id}}" bindtap="toggleStatus">{{item.status === 'off_sale' ? '上架' : '下架'}}</button>
+        <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteGoods">删除</button>
+      </view>
+    </view>
+  </block>
+</view>
+</scroll-view>
+</view>

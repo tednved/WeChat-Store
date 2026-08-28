@@ -1,0 +1,9 @@
+{
+  "name": "merchantOrders",
+  "version": "1.0.0",
+  "description": "商户订单管理云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "^4.0.2"
+  }
+}

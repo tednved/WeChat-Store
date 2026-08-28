@@ -1,0 +1,16 @@
+page { background: #f6f7fb; }
+.edit-page { min-height: 100vh; padding: 24rpx 28rpx 60rpx; box-sizing: border-box; }
+.form-card { padding: 6rpx 24rpx 30rpx; border-radius: 20rpx; background: #fff; }
+.field { padding-top: 28rpx; }
+.name-field { display: flex; align-items: center; flex-wrap: wrap; }
+.name-field .label { width: 100%; }
+.label { display: block; margin-bottom: 14rpx; color: #454b54; font-size: 27rpx; font-weight: 600; }
+.name-input { flex: 1; min-width: 0; height: 76rpx; padding: 0 16rpx; border: 1rpx solid #e5e8ed; border-radius: 12rpx; background: #fafbfc; color: #252a31; font-size: 27rpx; line-height: 76rpx; }
+.gender-options { display: flex; margin-left: 14rpx; }
+.gender-option { width: 76rpx; height: 54rpx; margin-left: 8rpx; border: 1rpx solid #dfe3e8; border-radius: 27rpx; color: #828892; text-align: center; line-height: 52rpx; font-size: 22rpx; }
+.gender-option.selected { border-color: #ff4a4a; background: #fff0ed; color: #ff4a4a; }
+.input, .textarea { width: 100%; box-sizing: border-box; border: 1rpx solid #e5e8ed; border-radius: 12rpx; background: #fafbfc; color: #252a31; font-size: 27rpx; }
+.input { height: 76rpx; padding: 0 16rpx; line-height: 76rpx; }
+.textarea { min-height: 150rpx; padding: 16rpx; }
+.save-btn { height: 84rpx; margin-top: 30rpx; border-radius: 42rpx; background: #ff4a4a; color: #fff; line-height: 84rpx; font-size: 29rpx; }
+.save-btn::after { border: 0; }

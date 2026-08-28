@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+const http = require('http');
+const app = require('../app');
+
+const port = Number(process.env.PORT || 9000);
+app.set('port', port);
+http.createServer(app).listen(port, '0.0.0.0');

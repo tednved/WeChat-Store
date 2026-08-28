@@ -1,0 +1,21 @@
+page { background: #f6f7fb; }
+.address-page { min-height: 100vh; padding: 24rpx 28rpx 60rpx; box-sizing: border-box; }
+.empty { padding: 150rpx 0; color: #999; text-align: center; font-size: 27rpx; }
+.address-card { padding: 24rpx; margin-bottom: 18rpx; border-radius: 20rpx; background: #fff; box-shadow: 0 8rpx 24rpx rgba(32,38,50,.04); }
+.address-card:active { background: #fffaf7; }
+.card-top, .card-bottom, .person { display: flex; align-items: center; }
+.card-top, .card-bottom { justify-content: space-between; }
+.name { color: #282d34; font-size: 30rpx; font-weight: 600; }
+.gender { margin-left: 12rpx; color: #ff7b57; font-size: 22rpx; }
+.phone { margin-left: 18rpx; color: #737982; font-size: 25rpx; }
+.radio { display: flex; align-items: center; justify-content: center; width: 40rpx; height: 40rpx; border: 2rpx solid #cfd4dc; border-radius: 50%; box-sizing: border-box; }
+.radio.checked { border-color: #ff4a4a; }
+.radio-inner { width: 20rpx; height: 20rpx; border-radius: 50%; background: #ff4a4a; }
+.detail { display: block; padding: 16rpx 0 18rpx; color: #626973; font-size: 26rpx; line-height: 1.5; }
+.card-bottom { padding-top: 16rpx; border-top: 1rpx solid #f1f2f4; }
+.default-label { color: #ff4a4a; font-size: 22rpx; }
+.card-actions { display: flex; margin-left: auto; }
+.edit, .delete { margin-left: 26rpx; color: #777e88; font-size: 24rpx; }
+.delete { color: #e56b5c; }
+.add-btn { width: 100%; height: 78rpx; margin: 24rpx 0 0; border-radius: 39rpx; background: #fff; color: #ff4a4a; line-height: 78rpx; font-size: 28rpx; }
+.add-btn::after { border: 0; }

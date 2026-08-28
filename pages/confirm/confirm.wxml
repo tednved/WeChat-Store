@@ -1,0 +1,49 @@
+<navigation-bar title="确认订单" back="{{true}}" />
+
+<scroll-view class="confirm-page" scroll-y="true">
+  <view class="address-card" bindtap="goAddress">
+    <view class="section-icon">址</view>
+    <view wx:if="{{address}}" class="address-content">
+      <view class="address-top">
+        <text class="receiver">{{address.name}}</text>
+        <text class="phone">{{address.phone}}</text>
+      </view>
+      <text class="address-detail">{{address.detail}}</text>
+    </view>
+    <view wx:else class="address-empty">请填写收货地址和联系电话</view>
+    <text class="chevron">›</text>
+  </view>
+
+  <view class="order-card">
+    <view class="card-title">订单明细</view>
+    <view class="confirm-item" wx:for="{{items}}" wx:key="id">
+      <image wx:if="{{item.image}}" class="item-image" src="{{item.image}}" mode="aspectFill" />
+      <view wx:else class="item-image image-placeholder">品</view>
+      <view class="item-main">
+        <text class="item-name">{{item.name}}</text>
+        <text class="item-count">x{{item.count}}</text>
+      </view>
+      <text class="item-price">¥{{item.price}}</text>
+    </view>
+  </view>
+
+  <view class="remark-card">
+    <text class="remark-label">订单备注</text>
+    <textarea class="remark-input" value="{{remark}}" bindinput="onRemarkInput" placeholder="有什么需要告诉商户的吗？例如：少冰、放门口" maxlength="200" />
+  </view>
+
+  <view class="price-card">
+    <view class="price-row"><text>商品合计</text><text>¥{{goodsTotalStr}}</text></view>
+    <view class="price-row"><text>配送费</text><text>{{deliveryFeeStr === '0.00' ? '免配送费' : '¥' + deliveryFeeStr}}</text></view>
+    <view class="price-row final"><text>应付金额</text><text>¥{{totalPriceStr}}</text></view>
+    <text wx:if="{{quoteLoading}}" class="quote-tip">正在校验商品最新价格...</text>
+  </view>
+</scroll-view>
+
+<view class="submit-bar">
+  <view class="submit-total">
+    <text>合计 </text>
+    <text class="amount">¥{{totalPriceStr}}</text>
+  </view>
+  <button class="submit-btn" bindtap="onSubmitTap" disabled="{{submitting || quoteLoading || items.length === 0}}">{{submitting ? '提交中...' : '提交订单并支付'}}</button>
+</view>

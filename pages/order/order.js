@@ -1,365 +1,83 @@
 Page({
   data: {
-    // 分类 & 商品（你可以替换成自己的）
-    categories: [
-      {
-        id: 'c1',
-        name: '本店优惠',
-        goods: [
-          {
-            id: 'g1',
-            name: '统一冰红茶 500ml',
-            desc: '这一口会很爽 · 月售108',
-            price: 4.5,
-            originPrice: 5.0,
-            image: '/assets/goods/ice_tea.jpg'
-          },
-          {
-            id: 'g2',
-            name: '魔法土豆脆·巴西烤肉味',
-            desc: '月售120 · 边看剧边嗑',
-            price: 1.0,
-            originPrice: 1.2,
-            image: '/assets/goods/potato_magic.jpg'
-          }
-        ]
-      },
-      {
-        id: 'c2',
-        name: '热销零食',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      },
-      {
-        id: 'c3',
-        name: '测试1',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      },
-      {
-        id: 'c4',
-        name: '测试2',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      },
-      {
-        id: 'c5',
-        name: '测试3',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c6',
-        name: '测试4',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c7',
-        name: '测试5',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c8',
-        name: '测试6',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c9',
-        name: '测试7',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c10',
-        name: '测试8',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c11',
-        name: '测试9',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      ,
-      {
-        id: 'c12',
-        name: '测试10',
-        goods: [
-          {
-            id: 'g3',
-            name: '良品铺子 卤鸭脖 100g',
-            desc: '卤香入味 · 宿舍追剧搭子',
-            price: 6.9,
-            originPrice: 7.5,
-            image: '/assets/goods/duck_neck.jpg'
-          },
-          {
-            id: 'g4',
-            name: '香辣鸭锁骨 120g',
-            desc: '骨肉紧实 · 香辣带劲',
-            price: 7.5,
-            originPrice: 8.0,
-            image: '/assets/goods/duck_bone.jpg'
-          }
-        ]
-      }      
-      // ... 你可以继续补更多分类
-    ],
-
-    activeCategoryIndex: 0,
-    toView: '',
-    categoryTops: [],
-
-    // 购物车相关
-    cartItems: [],       // [{id, name, price, count}]
+    categories: [],
+    cartItems: [],
+    cartMap: {},
     cartCount: 0,
     totalPrice: 0,
     totalPriceStr: '0.00',
-    showCartPopup: false
+    showCartPopup: false, // 购物车弹窗开关
+    activeCategoryIndex: 0,
+    toView: '',
+    categoryTops: [],
+    store: null
   },
 
-  // 等页面渲染完毕后计算右侧每个分类块的顶部位置
-  onReady() {
-    this.calcCategoryTops();
+  onLoad() {
+    this.fetchGoodsData();
   },
 
-  calcCategoryTops() {
-    const query = this.createSelectorQuery();
-    query.selectAll('.goods-category-block').boundingClientRect();
-    query.select('.goods-scroll').boundingClientRect();
-    query.exec(res => {
-      if (!res || !res[0] || !res[1]) return;
-      const rects = res[0];
-      const scrollRect = res[1];
-      const tops = rects.map(r => r.top - scrollRect.top);
-      this.setData({ categoryTops: tops });
+  // 从确认页支付成功返回点单页时，清空购物车
+  onShow() {
+    if (wx.getStorageSync('orderSubmitted')) {
+      wx.removeStorageSync('orderSubmitted');
+      this.onClearCart();
+    }
+  },
+
+  // 获取云端商品数据
+  fetchGoodsData() {
+    wx.showLoading({ title: '加载菜单...' });
+    this.cleanupExpiredOrders()
+    wx.cloud.callFunction({ name: 'catalog', data: {} }).then(res => {
+      const result = res.result || {}
+      if (!result.success) throw new Error(result.message || '菜单加载失败')
+      const categories = result.categories || []
+      this.setData({ categories, store: result.store || null });
+    }).catch((err) => {
+      console.error('菜单加载失败', err)
+      wx.showToast({ title: err.message || '菜单加载失败', icon: 'none' })
+    }).finally(() => wx.hideLoading());
+  },
+
+  cleanupExpiredOrders() {
+    const key = 'lastExpiredOrderCleanupAt'
+    const last = Number(wx.getStorageSync(key)) || 0
+    if (Date.now() - last < 60000) return Promise.resolve()
+    wx.setStorageSync(key, Date.now())
+    return wx.cloud.callFunction({ name: 'cancelExpiredOrders', data: { action: 'cleanup' } })
+      .catch((err) => console.error('过期订单清理失败', err))
+  },
+
+  // 统一更新购物车数据源
+  updateCart(cartItems) {
+    let cartCount = 0;
+    let totalPrice = 0;
+    let cartMap = {};
+
+    cartItems.forEach(item => {
+      cartCount += item.count;
+      totalPrice += item.price * item.count;
+      cartMap[item.id] = item.count;
     });
-  },
 
-  // 左侧点击分类
-  onCategoryTap(e) {
-    const index = e.currentTarget.dataset.index;
-    const category = this.data.categories[index];
     this.setData({
-      activeCategoryIndex: index,
-      toView: 'cat-' + category.id
+      cartItems,
+      cartMap,
+      cartCount,
+      totalPrice,
+      totalPriceStr: totalPrice.toFixed(2)
     });
   },
 
-  // 右侧滚动时更新左侧高亮
-  onGoodsScroll(e) {
-    const scrollTop = e.detail.scrollTop;
-    const tops = this.data.categoryTops;
-    if (!tops || tops.length === 0) return;
-
-    let currentIndex = 0;
-    for (let i = 0; i < tops.length; i++) {
-      const thisTop = tops[i];
-      const nextTop = tops[i + 1] !== undefined ? tops[i + 1] : Infinity;
-      if (scrollTop >= thisTop && scrollTop < nextTop) {
-        currentIndex = i;
-        break;
-      }
-    }
-
-    if (currentIndex !== this.data.activeCategoryIndex) {
-      this.setData({ activeCategoryIndex: currentIndex });
-    }
-  },
-
-  /* ========= 购物车相关 ========= */
-
-  // 根据 id 在所有分类中找到商品
-  findGoodById(gid) {
-    const { categories } = this.data;
-    for (let i = 0; i < categories.length; i++) {
-      const goods = categories[i].goods || [];
-      for (let j = 0; j < goods.length; j++) {
-        if (goods[j].id === gid) {
-          return goods[j];
-        }
-      }
-    }
-    return null;
-  }
-
-  ,
-
-  // 点击商品列表里的 "+"
+  // 增加商品 (列表与购物车通用)
   onAddTap(e) {
     const gid = e.currentTarget.dataset.gid;
-    this.addToCart(gid);
-  },
-
-  // 把指定商品加入购物车（或数量+1）
-  addToCart(gid) {
     const good = this.findGoodById(gid);
     if (!good) return;
+    if ((this.data.cartMap[gid] || 0) >= Number(good.stock || 0)) return wx.showToast({ title: '库存不足', icon: 'none' });
 
-    const cartItems = this.data.cartItems.slice();
+    let cartItems = [...this.data.cartItems];
     const idx = cartItems.findIndex(item => item.id === gid);
 
     if (idx >= 0) {
@@ -372,78 +90,67 @@ Page({
         count: 1
       });
     }
-
     this.updateCart(cartItems);
   },
 
-  // 统一更新购物车数量和总价
-  updateCart(cartItems) {
-    let cartCount = 0;
-    let totalPrice = 0;
-    cartItems.forEach(item => {
-      cartCount += item.count;
-      totalPrice += item.price * item.count;
-    });
+  // 减少商品 (列表与购物车通用)
+  onMinusTap(e) {
+    const gid = e.currentTarget.dataset.gid;
+    let cartItems = [...this.data.cartItems];
+    const idx = cartItems.findIndex(item => item.id === gid);
 
-    this.setData({
-      cartItems,
-      cartCount,
-      totalPrice,
-      totalPriceStr: totalPrice.toFixed(2)
-    });
-  },
+    if (idx === -1) return;
 
-  // 底部条：点击购物车图标
-  onCartIconTap() {
-    if (this.data.cartCount <= 0) {
-      wx.showToast({
-        title: '购物车是空的哦',
-        icon: 'none'
-      });
-      return;
+    if (cartItems[idx].count > 1) {
+      cartItems[idx].count -= 1;
+    } else {
+      cartItems.splice(idx, 1);
+      // 如果购物车空了，自动关闭弹窗
+      if (cartItems.length === 0) this.setData({ showCartPopup: false });
     }
-    this.setData({ showCartPopup: true });
+    this.updateCart(cartItems);
   },
 
-  // 点击遮罩，关闭弹窗
+  findGoodById(gid) {
+    for (let cat of this.data.categories) {
+      const g = cat.goods.find(item => item.id === gid);
+      if (g) return g;
+    }
+    return null;
+  },
+
+  // 弹窗控制逻辑
+  onCartIconTap() {
+    if (this.data.cartCount > 0) {
+      this.setData({ showCartPopup: !this.data.showCartPopup });
+    }
+  },
+
   onCartMaskTap() {
     this.setData({ showCartPopup: false });
   },
 
-  // 阻止点击弹窗内容时冒泡到遮罩
-  onCartPopupTap() {},
-
-  // 弹窗内 "+": 和 addToCart 共用逻辑
-  onCartPlus(e) {
-    const gid = e.currentTarget.dataset.gid;
-    this.addToCart(gid);
-  },
-
-  // 弹窗内 "-": 减少数量/删除项目
-  onCartMinus(e) {
-    const gid = e.currentTarget.dataset.gid;
-    const cartItems = this.data.cartItems.slice();
-    const idx = cartItems.findIndex(item => item.id === gid);
-    if (idx === -1) return;
-
-    cartItems[idx].count -= 1;
-    if (cartItems[idx].count <= 0) {
-      cartItems.splice(idx, 1);
-    }
-
-    this.updateCart(cartItems);
-  },
-
-  // 清空购物车
   onClearCart() {
     this.updateCart([]);
+    this.setData({ showCartPopup: false });
   },
 
-  // 去结算（暂不实现：给个提示即可）
+  // 去结算：进入订单确认页展示订单内容
   onSubmitTap() {
-    wx.showToast({
-      title: '结算页面暂未实现',
-      icon: 'none'
+    if (this.data.cartCount <= 0) return;
+
+    wx.setStorageSync('confirmOrder', {
+      items: this.data.cartItems,
+      store: this.data.store,
+      totalPrice: this.data.totalPrice,
+      totalPriceStr: this.data.totalPriceStr
     });
+    wx.navigateTo({ url: '/pages/confirm/confirm' });
+  },
+
+  // 分类联动逻辑保留
+  onCategoryTap(e) {
+    const index = e.currentTarget.dataset.index;
+    this.setData({ activeCategoryIndex: index, toView: 'cat-' + this.data.categories[index].id });
   }
 });

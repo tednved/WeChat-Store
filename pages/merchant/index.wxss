@@ -1,0 +1,26 @@
+page { height: 100%; overflow: hidden; background: #f5f5f5; }
+.merchant-shell { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.merchant-scroll { flex: 1; height: 0; min-height: 0; }
+.merchant-page { min-height: 100%; padding: 28rpx 24rpx calc(100rpx + env(safe-area-inset-bottom)); box-sizing: border-box; color: #222; }
+.merchant-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32rpx; }
+.title { display: block; font-size: 42rpx; font-weight: 700; }
+.subtitle { display: block; margin-top: 10rpx; color: #8a8f99; font-size: 26rpx; }
+.store-icon { width: 82rpx; height: 82rpx; border-radius: 24rpx; background: #ff4a4a; color: #fff; text-align: center; line-height: 82rpx; font-size: 38rpx; font-weight: 700; }
+.loading { padding: 100rpx 0; text-align: center; color: #999; }
+.summary-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.summary-card { width: calc(50% - 10rpx); min-height: 148rpx; margin-bottom: 20rpx; padding: 26rpx; box-sizing: border-box; border-radius: 22rpx; background: #fff; box-shadow: 0 6rpx 24rpx rgba(0, 0, 0, .045); }
+.summary-value { display: block; color: #222; font-size: 42rpx; font-weight: 700; }
+.summary-value.danger { color: #ff4a4a; }
+.summary-label { display: block; margin-top: 14rpx; color: #8a8f99; font-size: 25rpx; }
+.section-title { margin: 42rpx 4rpx 18rpx; font-size: 30rpx; font-weight: 700; }
+.quick-list { overflow: hidden; border-radius: 22rpx; background: #fff; box-shadow: 0 6rpx 24rpx rgba(0,0,0,.04); }
+.quick-item { display: flex; align-items: center; padding: 30rpx 24rpx; border-bottom: 1rpx solid #f0f1f4; }
+.quick-item:last-child { border-bottom: 0; }
+.quick-icon { width: 72rpx; height: 72rpx; border-radius: 20rpx; margin-right: 20rpx; text-align: center; line-height: 72rpx; color: #fff; font-size: 30rpx; font-weight: 700; }
+.goods-icon { background: linear-gradient(135deg, #ff835f, #ff4a4a); }
+.order-icon { background: linear-gradient(135deg, #ffb24d, #ff7a38); }
+.quick-text { flex: 1; }
+.quick-title { display: block; font-size: 30rpx; font-weight: 600; }
+.quick-desc { display: block; margin-top: 8rpx; color: #969ba5; font-size: 24rpx; }
+.arrow { color: #b9bec8; font-size: 34rpx; }
+.tip { margin: 30rpx 8rpx; color: #a0a5ae; font-size: 23rpx; line-height: 1.6; }

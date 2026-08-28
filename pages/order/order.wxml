@@ -1,8 +1,8 @@
 <view class="order-page">
   <!-- 顶部店铺信息 -->
   <view class="shop-header">
-    <text class="shop-name">6号楼零食铺</text>
-    <text class="shop-sub">免配送费 · 深夜缓解嘴馋小帮手</text>
+    <text class="shop-name">{{store.name || '店铺加载中'}}</text>
+    <text class="shop-sub">{{store.subtitle}}</text>
   </view>
 
   <!-- 内容区域：左右两列 -->
@@ -30,7 +30,7 @@
 
     <!-- 右侧商品列表 -->
     <scroll-view
-      class="goods-scroll"
+      class="goods-scroll {{cartCount > 0 ? '' : 'no-cart-bar'}}"
       scroll-y="true"
       scroll-into-view="{{toView}}"
       scroll-with-animation="true"
@@ -45,41 +45,34 @@
 
           <!-- 当前分类下的商品列表 -->
           <block wx:for="{{item.goods}}" wx:key="id" wx:for-item="good">
-            <view class="goods-item">
-              <image class="goods-img" src="{{good.image}}" mode="aspectFill"></image>
-              <view class="goods-info">
-                <view class="goods-name">
-                  <text>{{good.name}}</text>
-                </view>
-                <view class="goods-desc">
-                  <text>{{good.desc}}</text>
-                </view>
-                <view class="goods-bottom">
-                  <view class="goods-price">
-                    <text class="price">￥{{good.price}}</text>
-                    <text class="origin" wx:if="{{good.originPrice}}">
-                      ￥{{good.originPrice}}
-                    </text>
-                  </view>
-                  <button
-                    class="btn-add"
-                    size="mini"
-                    data-gid="{{good.id}}"
-                    bindtap="onAddTap"
-                  >
-                    +
-                  </button>
-                </view>
-              </view>
-            </view>
-          </block>
+  <view class="goods-item">
+    <image class="goods-img" src="{{good.image}}" mode="aspectFill"></image>
+    <view class="goods-info">
+      <view class="goods-name">{{good.name}}</view>
+      <view class="goods-desc">{{good.desc}}</view>
+      <view class="goods-bottom">
+        <view class="goods-price">
+          <text class="price">￥{{good.price}}</text>
         </view>
+        
+        <view class="stepper">
+          <block wx:if="{{cartMap[good.id] > 0}}">
+            <view class="minus-btn" data-gid="{{good.id}}" bindtap="onMinusTap">-</view>
+            <view class="count-num">{{cartMap[good.id]}}</view>
+          </block>
+          <view class="add-btn" data-gid="{{good.id}}" bindtap="onAddTap">+</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</block>
+    </view>
       </block>
     </scroll-view>
   </view>
 
   <!-- 底部购物车条 -->
-  <view class="cart-bar">
+  <view class="cart-bar" wx:if="{{cartCount > 0}}">
     <view class="cart-left" bindtap="onCartIconTap">
       <view class="cart-icon-wrapper">
         <view class="cart-icon">
@@ -125,25 +118,21 @@
             <view class="cart-item-right">
               <text class="cart-item-price">￥{{item.price}}</text>
 
-              <view class="cart-item-stepper">
-                <button
-                  class="stepper-btn"
-                  size="mini"
-                  data-gid="{{item.id}}"
-                  bindtap="onCartMinus"
-                >
-                  -
-                </button>
-                <text class="stepper-count">{{item.count}}</text>
-                <button
-                  class="stepper-btn"
-                  size="mini"
-                  data-gid="{{item.id}}"
-                  bindtap="onCartPlus"
-                >
-                  +
-                </button>
-              </view>
+              <view class="stepper">
+  <view 
+    class="minus-btn" 
+    data-gid="{{item.id}}" 
+    bindtap="onMinusTap"
+  >-</view>
+  
+  <text class="count-num">{{item.count}}</text>
+  
+  <view 
+    class="add-btn" 
+    data-gid="{{item.id}}" 
+    bindtap="onAddTap"
+  >+</view>
+</view>
             </view>
           </view>
         </block>

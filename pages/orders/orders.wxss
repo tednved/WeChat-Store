@@ -1,1 +1,120 @@
-/* pages/orders/orders.wxss */
+page {
+  height: 100%;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+.orders-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+.orders-scroll {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+}
+.orders-page {
+  min-height: 100%;
+  padding: 20rpx;
+  padding-bottom: calc(180rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+.empty-tip {
+  text-align: center;
+  color: #999;
+  margin-top: 200rpx;
+}
+.order-card {
+  background: #fff;
+  border-radius: 22rpx;
+  padding: 22rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 6rpx 24rpx rgba(28, 34, 44, .055);
+}
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16rpx;
+  margin-bottom: 16rpx;
+}
+.order-time-wrap { min-width: 0; flex: 1; overflow: hidden; }
+.order-time { display: block; overflow: hidden; color: #7d838c; font-size: 22rpx; text-overflow: ellipsis; white-space: nowrap; }
+.order-status-wrap { display: flex; align-items: center; gap: 10rpx; flex-shrink: 0; }
+.order-status { font-size: 26rpx; color: #ff4a4a; }
+.countdown { color: #f08330; font-size: 22rpx; font-variant-numeric: tabular-nums; }
+.order-status.paid { color: #07c160; }
+.order-status.refunding { color: #e98b2a; }
+.order-status.refunded { color: #07a85a; }
+.shop-title { display: flex; align-items: center; color: #222; font-size: 28rpx; font-weight: 600; }
+.shop-icon { margin-right: 10rpx; padding: 2rpx 8rpx; border-radius: 6rpx; background: #ff4a4a; color: #fff; font-size: 20rpx; }
+.arrow { margin-left: 8rpx; color: #aaa; font-size: 34rpx; font-weight: normal; }
+.order-no { font-size: 24rpx; color: #999; }
+.order-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+.countdown { font-size: 24rpx; color: #ff4a4a; }
+.countdown.expired { color: #999; }
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18rpx;
+  font-size: 28rpx;
+}
+.goods-image { width: 104rpx; height: 104rpx; flex-shrink: 0; border-radius: 14rpx; background: #f3f3f3; }
+.goods-main { display: flex; flex: 1; min-width: 0; justify-content: space-between; padding: 4rpx 16rpx; }
+.goods-name { flex: 1; color: #262626; line-height: 1.45; }
+.goods-count { margin-left: 12rpx; color: #999; font-size: 24rpx; }
+.summary-line { display: flex; justify-content: flex-end; align-items: baseline; color: #666; font-size: 24rpx; }
+.summary-line text { margin-left: 8rpx; }
+.summary-price { color: #222; font-size: 32rpx; font-weight: 600; }
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 52rpx;
+  margin-top: 14rpx;
+  padding-top: 14rpx;
+  border-top: 1rpx dashed #eee;
+}
+.total-price { font-weight: bold; font-size: 32rpx; color: #333; }
+.pay-btn {
+  margin: 0;
+  height: 50rpx;
+  padding: 0 18rpx;
+  background: #ff4a4a;
+  color: #fff;
+  font-size: 21rpx;
+  line-height: 50rpx;
+  border-radius: 25rpx;
+  white-space: nowrap;
+}
+.pay-btn::after { border: none; }
+.login-btn {
+  display: block;
+  width: 320rpx;
+  margin: 40rpx auto 0;
+  padding: 16rpx 0;
+  background: #ff4a4a;
+  color: #fff;
+  font-size: 30rpx;
+  border-radius: 999rpx;
+}
+.login-btn::after { border: none; }
+
+.merchant-status { margin-left: 12rpx; color: #ff7a45; font-size: 24rpx; }
+.orders-page { box-sizing: border-box; }
+.address-line { display: flex; padding: 18rpx 0; border-bottom: 1rpx solid #f2f3f5; font-size: 24rpx; }
+.line-label { width: 70rpx; flex-shrink: 0; color: #999fa8; }
+.line-value { flex: 1; color: #555b65; line-height: 1.5; }
+.goods-price { width: 120rpx; color: #777d86; text-align: right; }
+.remark-line { padding-top: 16rpx; color: #8b919a; font-size: 23rpx; }
+.footer-actions { display: flex; max-width: 50%; flex: 0 1 50%; align-items: center; justify-content: flex-end; gap: 8rpx; }
+.contact-btn { height: 50rpx; margin: 0; padding: 0 16rpx; border: 1rpx solid #ffd1c3; border-radius: 25rpx; background: #fff8f5; color: #e46d4b; line-height: 48rpx; font-size: 21rpx; white-space: nowrap; }
+.contact-btn::after { border: 0; }
+.load-more { padding: 22rpx 0; color: #aaa; text-align: center; font-size: 23rpx; }

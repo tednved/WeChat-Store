@@ -1,0 +1,64 @@
+<view class="merchant-shell">
+<navigation-bar title="商户管理" back="{{true}}" />
+<scroll-view class="merchant-scroll" scroll-y="true" enhanced="true" show-scrollbar="false">
+<view class="merchant-page">
+  <view class="merchant-header">
+    <view>
+      <text class="title">商户工作台</text>
+      <text class="subtitle">管理商品和处理订单</text>
+    </view>
+    <text class="store-icon">店</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">正在加载...</view>
+  <view wx:else class="summary-grid">
+    <view class="summary-card" bindtap="goOrders">
+      <text class="summary-value danger">{{waitingCount}}</text>
+      <text class="summary-label">待接单</text>
+    </view>
+    <view class="summary-card" bindtap="goOrders">
+      <text class="summary-value">{{deliveringCount}}</text>
+      <text class="summary-label">配送中</text>
+    </view>
+    <view class="summary-card" bindtap="goGoods">
+      <text class="summary-value">{{onSaleCount}}</text>
+      <text class="summary-label">已上架商品</text>
+    </view>
+    <view class="summary-card">
+      <text class="summary-value">¥{{todayAmount}}</text>
+      <text class="summary-label">今日营业额</text>
+    </view>
+  </view>
+
+  <view class="section-title">快捷操作</view>
+  <view class="quick-list">
+    <view class="quick-item" bindtap="goGoods">
+      <view class="quick-icon goods-icon">品</view>
+      <view class="quick-text">
+        <text class="quick-title">商品管理</text>
+        <text class="quick-desc">共 {{goodsCount}} 件商品，管理上下架和价格</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+    <view class="quick-item" bindtap="goOrders">
+      <view class="quick-icon order-icon">单</view>
+      <view class="quick-text">
+        <text class="quick-title">订单管理</text>
+        <text class="quick-desc">接单、制作、配送和完成订单</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+    <view class="quick-item" bindtap="enableOrderNotify">
+      <view class="quick-icon order-icon">铃</view>
+      <view class="quick-text">
+        <text class="quick-title">新订单提醒</text>
+        <text class="quick-desc">授权后可接收微信订阅消息</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <view class="tip">提示：管理员开启商户权限后，即可管理默认店铺的商品和订单。</view>
+</view>
+</scroll-view>
+</view>

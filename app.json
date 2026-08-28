@@ -1,51 +1,64 @@
 {
-  "pages": [
-    "pages/home/home",
-    "pages/order/order",
-    "pages/orders/orders",
-    "pages/mine/mine"
-  ],
-  "window": {
-    "navigationBarTextStyle": "black",
-    "navigationStyle": "custom"
-  },
-  "tabBar": {
-    "color": "#666666",
-    "selectedColor": "#ff4a4a",
-    "borderStyle": "black",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/home/home",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/order/order",
-        "text": "点单"
-      },
-      {
-        "pagePath": "pages/orders/orders",
-        "text": "订单"
-      },
-      {
-        "pagePath": "pages/mine/mine",
-        "text": "我的"
-      }
-    ]
-  },
-  "style": "v2",
-  "renderer": "skyline",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "defaultContentBox": true,
-      "tagNameStyleIsolation": "legacy",
-      "disableABTest": true,
-      "sdkVersionBegin": "3.0.0",
-      "sdkVersionEnd": "15.255.255"
-    }
-  },
-  "componentFramework": "glass-easel",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+    "pages":  [
+                  "pages/order/order",
+                  "pages/orders/orders",
+                  "pages/order-detail/order-detail",
+                  "pages/mine/mine",
+                  "pages/confirm/confirm",
+                  "pages/merchant/index",
+                  "pages/merchant/goods/goods",
+                  "pages/merchant/goods-edit/goods-edit",
+                  "pages/merchant/orders/orders",
+                  "pages/merchant/order-detail/order-detail",
+                  "pages/admin/index",
+                  "pages/admin/user-detail/user-detail",
+                  "pages/admin/stores/stores",
+                  "pages/admin/invite/invite",
+                  "pages/address/address",
+                  "pages/address-edit/address-edit"
+              ],
+    "window":  {
+                   "navigationBarTextStyle":  "black",
+                   "navigationStyle":  "custom"
+               },
+    "tabBar":  {
+                   "color":  "#666666",
+                   "selectedColor":  "#ff4a4a",
+                   "borderStyle":  "black",
+                   "backgroundColor":  "#ffffff",
+                   "list":  [
+                                {
+                                    "pagePath":  "pages/order/order",
+                                    "text":  "点单",
+                                    "iconPath":  "assets/picture/order.png",
+                                    "selectedIconPath":  "assets/picture/order.png"
+                                },
+                                {
+                                    "pagePath":  "pages/orders/orders",
+                                    "text":  "订单",
+                                    "iconPath":  "assets/picture/orders.png",
+                                    "selectedIconPath":  "assets/picture/orders.png"
+                                },
+                                {
+                                    "pagePath":  "pages/mine/mine",
+                                    "text":  "我的",
+                                    "iconPath":  "assets/picture/user.png",
+                                    "selectedIconPath":  "assets/picture/user.png"
+                                }
+                            ]
+               },
+    "style":  "v2",
+    "renderer":  "skyline",
+    "rendererOptions":  {
+                            "skyline":  {
+                                            "defaultDisplayBlock":  true,
+                                            "defaultContentBox":  true,
+                                            "disableABTest":  true,
+                                            "sdkVersionBegin":  "3.0.0",
+                                            "sdkVersionEnd":  "15.255.255"
+                                        }
+                        },
+    "componentFramework":  "glass-easel",
+    "sitemapLocation":  "sitemap.json",
+    "lazyCodeLoading":  "requiredComponents"
 }
